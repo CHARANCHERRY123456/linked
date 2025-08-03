@@ -6,16 +6,23 @@ import PostCard from "@/components/PostCard";
 import axiosClient from "@/utils/axiosClient";
 import { useAuth } from "@/context/authContext";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
     const { user } = useAuth();
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const router = useRouter();
 
     useEffect(() => {
+        if (!user) {
+          router.push("/login");
+        }
         async function fetchPosts() {
             try {
+                setLoading(true);
+                setError("");
                 const response = await axiosClient.get("/post");
                 setPosts(response.data);
             } catch (err) {
