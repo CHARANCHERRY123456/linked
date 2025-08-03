@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const token = getLocalStorageItem(LOCAL_STORAGE_TOKEN_KEY);
         if (token) {
             setToken(token);
-            axiosClient.get("/api/auth/me")
+            axiosClient.get("/auth/me")
                 .then(response => {
                     setUser(response.data.user); 
                 })
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const login = (token: string) => {
         setLocalStorageItem(LOCAL_STORAGE_TOKEN_KEY, token);
         setToken(token);
-        axiosClient.get("/api/auth/me")
+        axiosClient.get("/auth/me")
             .then(response => {
                 setUser(response.data.user);
             })
