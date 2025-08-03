@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
-
+import { AuthenticatedRequest } from "../types/express";
 import { AuthService } from "../service/auth.service";
-
-interface AuthenticatedRequest extends Request {
-  user?: { id: string };
-}
 
 export class AuthController {
     private authService: AuthService;
