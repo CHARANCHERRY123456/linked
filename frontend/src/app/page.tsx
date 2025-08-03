@@ -1,3 +1,48 @@
-export default function Home() {
-  return <div className="p-8">Home Feed</div>
+"use client";
+
+
+import PostForm from "@/components/PostForm";
+import PostCard from "@/components/PostCard";
+import axiosClient from "@/utils/axiosClient";
+import { useAuth } from "@/context/authContext";
+import { useEffect, useState } from "react";
+
+export default function HomePage() {
+    const { user } = useAuth();
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                const response = await axiosClient.get("/post");
+                setPosts(response.data);
+            } catch (err) {
+                setError("Failed to fetch posts");
+                setPosts([]);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchPosts();
+    }, []);
+
+    return (
+        <div className="max-w-2xl mx-auto p-6">
+            <h1 className="text-2xl font-bold mb-4">Welcome to Mini LinkedIn</h1>
+            {user && <PostForm />}
+            {loading ? (
+                <div>Loading posts...</div>
+            ) : error ? (
+                <div className="text-red-600 mb-2">{error}</div>
+            ) : (
+                <div className="space-y-4">
+                    {posts.map((post: any) => (
+                        <PostCard key={post._id} post={post} />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 }
