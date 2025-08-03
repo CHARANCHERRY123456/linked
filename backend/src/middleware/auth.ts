@@ -2,12 +2,8 @@ import { NextFunction , Response } from "express";
 import { verifyToken } from "../utils/jwt.util";
 
 export function authMiddleware(req: any, res: Response, next: NextFunction): void {
-    const authHeader = req.headers.authorization;
-    console.log("Authorization header:", authHeader);
-
-    const token = authHeader?.split(" ")[1];
-    console.log("Extracted token:", token);
-
+    const token = req.headers.authorization?.split(" ")[1];
+    
     if (!token) {
         res.status(401).json({ message: "No token is provided" });
         return;
@@ -15,7 +11,6 @@ export function authMiddleware(req: any, res: Response, next: NextFunction): voi
 
     try {
         const decoded = verifyToken(token);
-        console.log("Decoded token:", decoded);
         req.user = decoded;
         next();
     } catch (error : any) {

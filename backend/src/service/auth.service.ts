@@ -7,7 +7,6 @@ export class AuthService {
     if (!name || !email || !password) {
       throw new Error("Name, email, and password are required");
     }
-    console.log(`Registering user: ${name}, Email: ${email}`);
     const hashedPassword = await hash(password, 10);
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
@@ -27,9 +26,8 @@ export class AuthService {
     return { token };
   };
 
-  meService = async (token: string): Promise<InstanceType<typeof User> | null> => {
-    const decoded = verifyToken(token) as { id: string };
-    const user = await User.findById(decoded.id);
+  meService = async (id : string): Promise<InstanceType<typeof User> | null> => {
+    const user = await User.findById(id);
     return user;
   };
 }

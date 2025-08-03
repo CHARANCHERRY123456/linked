@@ -18,7 +18,6 @@ export class AuthController {
             const { name, email, password } = req.body;
             
             const user = await this.authService.registerUser(name, email, password);
-            console.log(`Registering user: ${name}, Email: ${email}`);
             if (!user) {
                 res.status(400).json({ message: "User registration failed" });
                 return;
@@ -45,11 +44,13 @@ export class AuthController {
                 res.status(401).json({ message: "Unauthorized" });
                 return;
             }
+            
             const user = await this.authService.meService(req.user.id);
             if (!user) {
                 res.status(404).json({ message: "User not found" });
                 return;
             }
+            
             res.status(200).json(user);
         } catch (error : any) {
             res.status(500).json({ error : error.message || "Internal server error" });
