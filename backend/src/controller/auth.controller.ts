@@ -47,7 +47,7 @@ export class AuthController {
                 return;
             }
             
-            res.status(200).json(user);
+            res.status(200).json({ user }); // <-- wrap user in an object
         } catch (error : any) {
             res.status(500).json({ error : error.message || "Internal server error" });
         }
