@@ -23,7 +23,10 @@ export default function Navbar() {
                     {user ? (
                         <>
                             <div className="flex items-center space-x-4">
-                                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                <div 
+                                    onClick={() => router.push(`/profile/${user._id}`)}
+                                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-blue-600 transition-colors"
+                                >
                                     {user.name?.charAt(0).toUpperCase()}
                                 </div>
                                 <span className="text-gray-700 font-medium">Welcome, {user.name}</span>

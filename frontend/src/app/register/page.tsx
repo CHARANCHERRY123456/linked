@@ -30,15 +30,63 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="max-w-sm mx-auto mt-20 p-6 border rounded">
-            <form onSubmit={handleSubmit}>
-                <Input label="Name" value={name} onChange={e => setName(e.target.value)} />
-                <Input label="Email" value={email} onChange={e => setEmail(e.target.value)} />
-                <Input label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                <Input label="Confirm Password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-                {error && <div className="text-red-600 mb-2">{error}</div>}
-                <button className="w-full bg-green-600 text-white p-2 rounded">Register</button>
-            </form>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+            <div className="max-w-md w-full space-y-8">
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h2>
+                    <p className="text-gray-600">Join our community and start connecting</p>
+                </div>
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <Input 
+                            label="Full Name" 
+                            value={name} 
+                            onChange={e => setName(e.target.value)}
+                            placeholder="Enter your full name"
+                        />
+                        <Input 
+                            label="Email" 
+                            type="email"
+                            value={email} 
+                            onChange={e => setEmail(e.target.value)}
+                            placeholder="Enter your email"
+                        />
+                        <Input 
+                            label="Password" 
+                            type="password" 
+                            value={password} 
+                            onChange={e => setPassword(e.target.value)}
+                            placeholder="Create a strong password"
+                        />
+                        <Input 
+                            label="Confirm Password" 
+                            type="password" 
+                            value={confirmPassword} 
+                            onChange={e => setConfirmPassword(e.target.value)}
+                            placeholder="Confirm your password"
+                        />
+                        {error && (
+                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                                {error}
+                            </div>
+                        )}
+                        <button 
+                            type="submit"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 shadow-sm"
+                        >
+                            Create Account
+                        </button>
+                    </form>
+                    <div className="mt-6 text-center">
+                        <p className="text-gray-600">
+                            Already have an account?{' '}
+                            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                                Sign in
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
