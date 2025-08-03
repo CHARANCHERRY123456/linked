@@ -32,7 +32,6 @@ export class ProfileController {
         try {
             const userId = req.params?.id;
             const posts = await this.profileService.getUserPosts(userId);
-            console.log("Fetched posts:", posts);
             res.status(200).json(posts); // Make sure to send the array directly
         } catch (error: any) {
             res.status(500).json({ error: error.message || "Internal server error" });
