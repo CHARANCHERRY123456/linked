@@ -6,7 +6,14 @@ import profileRouter from './routes/profile.routes';
 import morgan from 'morgan';
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ['https://linked-orpin.vercel.app', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("dev"));
 
