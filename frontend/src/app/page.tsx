@@ -17,6 +17,8 @@ export default function HomePage() {
 
     useEffect(() => {
         if (!user) {
+          console.log("no user is found");
+          
           router.push("/login");
         }
         async function fetchPosts() {

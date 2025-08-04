@@ -14,6 +14,7 @@ interface User {
 interface AuthContextType {
     user: User | null;
     token: string | null;
+    isLoading: boolean;
     login: (token: string) => void;
     logout: () => void;
 }
@@ -23,6 +24,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const token = getLocalStorageItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -34,7 +36,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 })
                 .catch(() => {
                     setUser(null);
-                });
+                })
+                .finally(() => setIsLoading(false));
+        } else {
+            setIsLoading(false);
         }
     }, []);
 
@@ -57,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout }}>
+        <AuthContext.Provider value={{ user, token, isLoading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
