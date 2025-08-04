@@ -4,10 +4,12 @@ import axiosClient from "@/utils/axiosClient";
 import { useState } from "react";
 
 
-export default function PostForm(){
-    const [content , setContent] = useState<string>("");
-    const [title , setTitle] = useState<string>("");
-    const [error , setError] = useState<string>("");
+
+export default function PostForm({ onPostCreated }: { onPostCreated?: (post: any) => void }) {
+    const [content, setContent] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -15,15 +17,19 @@ export default function PostForm(){
             setError("Title and content are required");
             return;
         }
+        setLoading(true);
         try {
             const res = await axiosClient.post("/post", { title, content });
             setTitle("");
             setContent("");
             setError("");
-            // refresh the page after successful post creation
-            window.location.reload();
+            if (onPostCreated) {
+                onPostCreated(res.data);
+            }
         } catch (err: any) {
             setError(err.response?.data?.error || "Failed to create post");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -69,11 +75,22 @@ export default function PostForm(){
                             <span className="text-sm">Video</span>
                         </button>
                     </div>
-                    <button 
+                    <button
                         type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition-colors duration-200 shadow-sm"
+                        disabled={loading}
+                        className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-medium px-6 py-2 rounded-lg transition-colors duration-200 shadow-sm flex items-center justify-center space-x-2"
                     >
-                        Post
+                        {loading ? (
+                            <>
+                                <svg className="animate-spin w-5 h-5 text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Posting...</span>
+                            </>
+                        ) : (
+                            <span>Post</span>
+                        )}
                     </button>
                 </div>
             </form>

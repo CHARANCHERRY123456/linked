@@ -22,9 +22,14 @@ export default function Login() {
 
     async function onSubmit(e: FormEvent) {
         e.preventDefault();
-        const res = await axiosClient.post("/auth/login", { email, password });
-        login(res.data.token);
-        router.push("/");
+        try{
+            const res = await axiosClient.post("/auth/login", { email, password });
+            login(res.data.token);
+            router.push("/");
+
+        }catch(error : any){
+            alert("login failed try again");
+        }
     }
 
     if (isLoading) {
