@@ -20,6 +20,8 @@ export default function PostForm(){
             setTitle("");
             setContent("");
             setError("");
+            // refresh the page after successful post creation
+            window.location.reload();
         } catch (err: any) {
             setError(err.response?.data?.error || "Failed to create post");
         }
